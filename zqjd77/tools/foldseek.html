@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foldseek - Protein Structure Search</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <script src="../components/component-loader.js"></script>
+</head>
+<body>
+    <!-- Header Container -->
+    <div id="header-container"></div>
+
+    <!-- Navigation Bar Container -->
+    <div id="navbar-container"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar Container -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <a href="../index.html" class="back-button">← Back to Home</a>
+            
+            <div class="content-header">
+                <h1>Foldseek - Protein Structure Search</h1>
+            </div>
+
+            <div class="tool-description">
+                <h3>How to use:</h3>
+                <br/>
+                <ol>
+                    <li>Choose your query type: upload a PDB file, enter a PDB ID, or provide a sequence</li>
+                    <li>Select the appropriate database to search against</li>
+                    <li>Adjust search parameters based on your needs</li>
+                    <li>Click "Search Structures" to start the search</li>
+                    <li>Browse and download the search results</li>
+                    <li>Typically, a search job completes within 1 - 10 minutes depending on the size of the query and the database.</li>
+                </ol>
+            </div>
+
+            <div class="input-form">
+                <h3>Submit Structure for Database Search</h3>
+                <form id="foldseek-form">
+                    <div class="form-group">
+                        <label for="query-type">Query Type:</label>
+                        <select id="query-type" name="query-type" onchange="toggleInputMethod()">
+                            <option value="pdb-file">Upload PDB File</option>
+                            <option value="pdb-id">PDB ID</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="pdb-file-group">
+                        <label for="pdb-file">PDB Structure File:</label>
+                        <input type="file" id="pdb-file" name="pdb-file" accept=".pdb">
+                        <small>Upload a PDB file to search for similar structures</small>
+                    </div>
+
+                    <div class="form-group" id="pdb-id-group" style="display: none;">
+                        <label for="pdb-id">PDB ID:</label>
+                        <input type="text" id="pdb-id" name="pdb-id" placeholder="7CWM" maxlength="4" style="text-transform: uppercase;">
+                        <small>Enter a 4-character PDB ID (e.g., 7CWM). We will fetch the PDB file automatically.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="database">
+                            Search Database:
+                            <span class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Choose which structural database to search. Currently available: Influenza structures database with protein structures related to influenza virus.</span>
+                            </span>
+                        </label>
+                        <select id="database" name="database">
+                            <option value="influenza">Influenza Structures</option>
+                            <option value="sars-cov">SARS-CoV Structures</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="job-name">Job Name (optional):</label>
+                        <input type="text" id="job-name" name="job-name" placeholder="My structure search">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="max-results">
+                            Maximum Results:
+                            <span class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Maximum number of similar structures to return. More results provide comprehensive coverage but take longer to process and review.</span>
+                            </span>
+                        </label>
+                        <select id="max-results" name="max-results">
+                            <option value="10">10</option>
+                            <option value="50" selected>50</option>
+                            <option value="100">100</option>
+                            <option value="500">500</option>
+                            <option value="1000">1000</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="evalue">
+                            E-value threshold:
+                            <span class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Statistical significance threshold. Lower values (1e-10) return only highly similar structures. Higher values (10) include more distant matches but may contain false positives.</span>
+                            </span>
+                        </label>
+                        <select id="evalue" name="evalue">
+                            <option value="1e-10">1e-10 (very strict)</option>
+                            <option value="1e-5">1e-5 (strict)</option>
+                            <option value="1e-3" selected>1e-3 (default)</option>
+                            <option value="1e-1">1e-1 (permissive)</option>
+                            <option value="10">10 (very permissive)</option>
+                        </select>
+                    </div>
+
+                    <!-- <div class="form-group">
+                        <label for="alignment-type">Alignment Type:</label>
+                        <select id="alignment-type" name="alignment-type">
+                            <option value="0">Automatic</option>
+                            <option value="1">Global alignment</option>
+                            <option value="2">Local alignment</option>
+                        </select>
+                    </div> -->
+
+                    <button type="submit" class="submit-button">Search Structures</button>
+                </form>
+            </div>
+    </div>
+
+    <!-- Load required services -->
+    <script src="../services/api-service.js"></script>
+    <script src="../services/protein-tools-service.js"></script>
+    <script src="../scripts/foldseek.js"></script>
+</body>
+</html>

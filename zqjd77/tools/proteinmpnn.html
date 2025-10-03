@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProteinMPNN - Protein Sequence Design</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <script src="../components/component-loader.js"></script>
+</head>
+<body>
+    <!-- Header Container -->
+    <div id="header-container"></div>
+
+    <!-- Navigation Bar Container -->
+    <div id="navbar-container"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar Container -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <a href="../index.html" class="back-button">← Back to Home</a>
+            
+            <div class="content-header">
+                <h1>ProteinMPNN - Protein Sequence Design</h1>
+            </div>
+        
+            <div class="tool-description">
+                <h3>How to use:</h3>
+                <br/>
+                <ol>
+                    <li>Upload a PDB file containing your target protein structure</li>
+                    <li>Specify which chains you want to redesign</li>
+                    <li>Optionally, specify positions to keep fixed or amino acids to avoid</li>
+                    <li>Choose the number of sequence designs and sampling parameters</li>
+                    <li>Click "Submit Design Job" to start the design process</li>
+                    <li>Download the designed sequences when the job completes</li>
+                    <li>Typically, a design job completes within 1 - 10 minutes depending on the size of the query and the number of designs requested.</li>
+                </ol>
+            </div>
+
+            <div class="input-form">
+                <h3>Submit Structure for Sequence Design</h3>
+                <form id="proteinmpnn-form">
+                    <div class="form-group">
+                        <label for="query-type">Query Type:</label>
+                        <select id="query-type" name="query-type">
+                            <option value="pdb-file" selected>Upload PDB File</option>
+                            <option value="pdb-id">PDB ID</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="pdb-file-group">
+                        <label for="pdb-file">PDB Structure File:</label>
+                        <input type="file" id="pdb-file" name="pdb-file" accept=".pdb">
+                        <small>Upload a PDB file containing the protein backbone structure you want to redesign</small>
+                        <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 4px; border-left: 4px solid #28a745;">
+                            <strong>📁 Example files:</strong><br>
+                            • <a href="https://www.rcsb.org/structure/7CWM" target="_blank" rel="noopener">SARS-CoV-2 Spike Protein Wuhan Variant (PDB: 7CWM)</a><br>
+                            • Download from <a href="https://www.rcsb.org" target="_blank" rel="noopener">RCSB PDB</a> by searching for any protein
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="pdb-id-group" style="display: none;">
+                        <label for="pdb-id">PDB ID:</label>
+                        <input type="text" id="pdb-id" name="pdb-id" placeholder="7CWM" maxlength="4" style="text-transform: uppercase;">
+                        <small>Enter a 4-character PDB ID (e.g., 7CWM). We will fetch the PDB file automatically.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="job-name">Job Name (optional):</label>
+                        <input type="text" id="job-name" name="job-name" placeholder="My sequence design job">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="chains-mode">
+                            Chains to Design:
+                            <span class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Which protein chains to redesign. Use chain IDs from your PDB file (e.g., A,B,C). Check PDB file for available chains.</span>
+                            </span>
+                        </label>
+                        <select id="chains-mode" name="chains-mode">
+                            <option value="all" selected>All chains</option>
+                            <option value="select">Select chains</option>
+                        </select>
+                        <div id="chains-select-container" style="display: none; margin-top: 8px;">
+                            <input type="text" id="chains" name="chains" placeholder="A, B, C, ...">
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="form-group">
+                        <label for="num-designs">
+                            Number of Designs:
+                            <span class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">How many different sequence variants to generate. More designs give more options but take longer to compute.</span>
+                            </span>
+                        </label>
+                        <select id="num-designs" name="num-designs">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="temperature">
+                            Sampling Temperature:
+                            <span class="tooltip-container">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text">Controls sequence diversity. Lower values (0.1) produce conservative designs similar to natural proteins. Higher values (0.5) create more diverse but potentially less stable sequences.</span>
+                            </span>
+                        </label>
+                        <select id="temperature" name="temperature">
+                            <option value="0.1">0.1 (conservative)</option>
+                            <option value="0.2" selected>0.2 (default)</option>
+                            <option value="0.3">0.3</option>
+                            <option value="0.5">0.5 (diverse)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="submit-button">Submit Design Job</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load required services -->
+    <script src="../services/api-service.js"></script>
+    <script src="../services/protein-tools-service.js"></script>
+    <script src="../scripts/proteinmpnn.js"></script>
+</body>
+</html>

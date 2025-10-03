@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Structure-Informed Vaccine Design Tools</title>
+    <link rel="stylesheet" href="./styles/styles.css">
+    <script src="components/component-loader.js"></script>
+</head>
+<body>
+    <!-- Header Container -->
+    <div id="header-container"></div>
+
+    <!-- Navigation Bar Container -->
+    <div id="navbar-container"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar Container -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1>Structure-Informed Vaccine Design Tools</h1>
+            </div>
+            
+            <div class="home-intro">
+                <h2>Welcome to our Protein Prediction and Design Tools</h2>
+                <p>Access our suite of tools through the sidebar navigation.</p>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3><a href="tools/colabfold.html" style="text-decoration: none; color: inherit;">ColabFold</a></h3>
+                    <p>Fast and accurate protein structure prediction using AlphaFold2 and ColabFold technology.</p>
+                    <a href="tools/colabfold.html" class="launch-button" style="display: inline-block; text-decoration: none; font-size: 14px; padding: 8px 16px;">Access Tool →</a>
+                </div>
+                <div class="service-card">
+                    <h3><a href="tools/proteinmpnn.html" style="text-decoration: none; color: inherit;">ProteinMPNN</a></h3>
+                    <p>Neural network-based protein sequence design for structure-based protein engineering.</p>
+                    <a href="tools/proteinmpnn.html" class="launch-button" style="display: inline-block; text-decoration: none; font-size: 14px; padding: 8px 16px;">Access Tool →</a>
+                </div>
+                <div class="service-card">
+                    <h3><a href="tools/foldseek.html" style="text-decoration: none; color: inherit;">Foldseek</a></h3>
+                    <p>Ultra-fast protein structure search and comparison against large databases.</p>
+                    <a href="tools/foldseek.html" class="launch-button" style="display: inline-block; text-decoration: none; font-size: 14px; padding: 8px 16px;">Access Tool →</a>
+                </div>
+                <div class="service-card">
+                    <h3><a href="tools/colabdock.html" style="text-decoration: none; color: inherit;">ColabDock (Under Development)</a></h3>
+                    <p>Deep learning-based protein docking for predicting protein-protein interactions and complex structures.</p>
+                    <a href="tools/colabdock.html" class="launch-button" style="display: inline-block; text-decoration: none; font-size: 14px; padding: 8px 16px;">Access Tool →</a>
+                </div>
+            </div>
+            <div class="content-header" style="margin-top: 20px;">
+                <h1>Server Status</h1>
+            </div>
+            <div class="server-status-container">
+                <h3 id="server-status" class="status-pill status-checking">Server: Checking...</h3>
+                <div class="status-actions" style="display: flex; align-items: center; gap: 10px;">
+                    <button class="status-button" onclick="testServerConnection()">Check Status</button>
+                    <span class="tooltip-container">
+                        <span class="tooltip-icon">?</span>
+                        <span class="tooltip-text">Check the status of the server</span>
+                    </span>
+                </div>
+            </div>
+            <div class="server-status-container">
+                <h3 id="colabfold-queue-status" class="status-pill status-checking">ColabFold Queue: Checking...</h3>
+                <div class="status-actions" style="display: flex; align-items: center; gap: 10px;">
+                    <button class="status-button" onclick="checkColabFoldQueue()">Check ColabFold Queue</button>
+                    <span class="tooltip-container">
+                        <span class="tooltip-icon">?</span>
+                        <span class="tooltip-text">Check the status of the ColabFold queue</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./scripts/ping.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColabFold Jobs - Structure-Informed Vaccine Design Tools</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <script src="components/component-loader.js"></script>
+    <script src="services/api-service.js"></script>
+    <script src="scripts/jobs.js"></script>
+</head>
+<body>
+    <!-- Header Container -->
+    <div id="header-container"></div>
+
+    <!-- Navigation Bar Container -->
+    <div id="navbar-container"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar Container -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1>ColabFold Job Dashboard</h1>
+                <p>Monitor and manage your ColabFold protein structure prediction jobs</p>
+            </div>
+            
+            <!-- Job Statistics -->
+            <div class="job-stats">
+                <div class="stat-card total">
+                    <div class="stat-number" id="total-jobs">0</div>
+                    <div class="stat-label">Total Jobs</div>
+                </div>
+                <div class="stat-card running">
+                    <div class="stat-number" id="running-jobs">0</div>
+                    <div class="stat-label">Running</div>
+                </div>
+                <div class="stat-card failed">
+                    <div class="stat-number" id="failed-jobs">0</div>
+                    <div class="stat-label">Failed</div>
+                </div>
+                <div class="stat-card completed">
+                    <div class="stat-number" id="completed-jobs">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+            </div>
+
+            <!-- Job Controls -->
+            <div class="job-controls">
+                <button class="refresh-button" id="refresh-btn">🔄 Refresh Jobs</button>
+                <label>
+                    <input type="checkbox" id="auto-refresh" checked> Auto-refresh (30s)
+                </label>
+            </div>
+
+            <!-- Cleanup Controls -->
+            <div class="cleanup-controls">
+                <h3>Cleanup Operations</h3>
+                <div class="cleanup-buttons">
+                    <button class="cleanup-btn danger-cleanup" onclick="clearAllToolJobs('proteinmpnn')" title="Clear all ProteinMPNN job folders">
+                        Clear ProteinMPNN Jobs
+                    </button>
+                    <button class="cleanup-btn danger-cleanup" onclick="clearAllToolJobs('colabfold')" title="Clear all ColabFold job folders">
+                        Clear ColabFold Jobs
+                    </button>
+                    <button class="cleanup-btn danger-cleanup" onclick="clearAllToolJobs('foldseek')" title="Clear all Foldseek job folders">
+                        Clear Foldseek Jobs
+                    </button>
+                    <!-- <button class="cleanup-btn tool-cleanup" onclick="clearAllToolJobs('colabdock')" title="Clear all ColabDock job folders">
+                        🔗 Clear ColabDock Jobs
+                    </button> -->
+                    <!-- <button class="cleanup-btn danger-cleanup" onclick="clearAllJobs()" title="Clear ALL job folders for ALL tools">
+                        🗑️ Clear ALL Jobs
+                    </button> -->
+                </div>
+            </div>
+
+            <!-- Jobs List -->
+            <div class="jobs-container" id="jobs-container">
+                <div class="loading-message">Loading jobs...</div>
+            </div>
+        </div>
+    </div>
+    <link rel="stylesheet" href="styles/jobs.css">
+</body>
+</html>

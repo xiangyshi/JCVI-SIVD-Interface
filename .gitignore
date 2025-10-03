@@ -1,0 +1,42 @@
+# Node and logs
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# OS/editor files
+.DS_Store
+.vscode/
+.idea/
+
+# Env and runtime
+.env
+.env.local
+.cache/
+
+# Server uploads and job artifacts
+server/uploads/
+
+# Containers: ignore generated data, tmp, outputs, weights, and embedded repos
+containers/**/tmp/
+containers/**/tmp/**
+containers/**/output/
+containers/**/output/**
+containers/foldseek/weights/
+containers/foldseek/weights/**
+containers/foldseek/database/
+containers/foldseek/database/**
+containers/colabdock/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Build artifacts
+dist/
+build/
+coverage/
+
+

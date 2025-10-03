@@ -1,0 +1,6 @@
+timestamp,input_file,file_size_kb,num_sequences,temperature,runtime_seconds,success,gpu_used,sequences_generated,output_files
+2025-07-03 13:52:09,7cwm.pdb,2500.4,10,0.2,187.8,True,False,0,1
+2025-07-03 13:53:30,7cwm.pdb,2500.4,3,0.05,74.68,True,False,0,1
+2025-07-03 13:54:49,7cwm.pdb,2500.4,5,0.1,64.37,True,True,0,1
+2025-07-03 13:56:45,7cwm.pdb,2500.4,10,0.2,108.69,True,True,0,1
+2025-07-03 13:57:27,7cwm.pdb,2500.4,3,0.05,35.83,True,True,0,1

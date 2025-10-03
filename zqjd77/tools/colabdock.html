@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColabDock - Protein Docking with Experimental Restraints</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <script src="../components/component-loader.js"></script>
+</head>
+<body>
+    <!-- Header Container -->
+    <div id="header-container"></div>
+
+    <!-- Navigation Bar Container -->
+    <div id="navbar-container"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar Container -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <a href="../index.html" class="back-button">← Back to Home</a>
+            
+            <div class="content-header">
+                <h1>ColabDock (❗❗❗ Under Development ❗❗❗)</h1>
+            </div>
+            
+            <div class="tool-description">
+                <strong>Introduction:</strong> ColabDock is an integrated structure prediction framework for protein-protein docking that incorporates experimental restraints. Based on ColabDesign and AlphaFold2, it can generate accurate protein complex structures using various types of experimental constraints including 1v1, 1vN, MvN, and repulsive restraints.
+            </div>
+
+            <div class="tool-description">
+                <h3>How to use:</h3>
+                <br/>
+                <ol>
+                    <li>Upload your protein structure file (PDB format)</li>
+                    <li>Configure the docking parameters:
+                        <ul>
+                            <li><strong>Chains:</strong> Specify which chains to dock (e.g., "A,B" or "A,B,C,D")</li>
+                            <li><strong>Fixed Chains:</strong> Optionally specify chain groups to keep fixed relative to each other</li>
+                            <li><strong>Restraints:</strong> Add experimental restraints if available</li>
+                            <li><strong>Optimization Parameters:</strong> Adjust rounds, steps, and other settings</li>
+                        </ul>
+                    </li>
+                    <li>Click "Submit Job" to start the docking</li>
+                    <li>You will receive a job ID to track your submission</li>
+                    <li>Results will be available for download once the job completes</li>
+                </ol>
+                <br/>
+                <p><strong>Note:</strong> Job completion time depends on protein size, number of rounds/steps, and server load. Typical jobs complete within 10-60 minutes.</p>
+            </div>
+
+            <div class="tool-features">
+                <h3>Features:</h3>
+                <ul>
+                    <li>Protein-protein docking with experimental restraints</li>
+                    <li>Support for multiple restraint types: 1v1, 1vN, MvN, and repulsive</li>
+                    <li>Integration with AlphaFold2-Multimer for accurate predictions</li>
+                    <li>Flexible chain configuration and fixed chain groups</li>
+                    <li>Optimization parameters for fine-tuning performance</li>
+                    <li>Downloadable results in PDB format</li>
+                    <li>Top-ranked docking structures output</li>
+                </ul>
+            </div>
+
+            <div class="input-form">
+                <h3>Submit Protein Structure for Docking</h3>
+                <form id="colabdock-form">
+                    <div class="form-group">
+                        <label for="pdb-file">Protein Structure File (PDB):</label>
+                        <input type="file" id="pdb-file" name="pdb-file" accept=".pdb" required>
+                        <small>Upload a PDB file containing the protein structure to dock</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="chains">Chains to Dock:</label>
+                        <input type="text" id="chains" name="chains" value="A,B" placeholder="A,B" required>
+                        <small>Comma-separated chain IDs (e.g., "A,B" or "A,B,C,D")</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fixed-chains">Fixed Chain Groups (Optional):</label>
+                        <input type="text" id="fixed-chains" name="fixed-chains" placeholder="A,B;C,D">
+                        <small>Semicolon-separated groups of chains to keep fixed relative to each other</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="res-thres">Restraint Threshold (Å):</label>
+                        <input type="number" id="res-thres" name="res-thres" value="8.0" min="2.0" max="22.0" step="0.1">
+                        <small>Distance threshold for restraints (2-22 Å)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rep-thres">Repulsive Threshold (Å):</label>
+                        <input type="number" id="rep-thres" name="rep-thres" value="8.0" min="2.0" max="22.0" step="0.1">
+                        <small>Distance threshold for repulsive restraints (2-22 Å)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rounds">Optimization Rounds:</label>
+                        <input type="number" id="rounds" name="rounds" value="1" min="1" max="10">
+                        <small>Number of optimization rounds (1-10)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="steps">Steps per Round:</label>
+                        <input type="number" id="steps" name="steps" value="50" min="10" max="200">
+                        <small>Number of optimization steps per round (10-200)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="save-every-n-step">Save Every N Steps:</label>
+                        <input type="number" id="save-every-n-step" name="save-every-n-step" value="1" min="1" max="10">
+                        <small>Save conformations every N steps (1-10)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="use-multimer" name="use-multimer" checked>
+                            Use AF2-Multimer
+                        </label>
+                        <small>Use AlphaFold2-Multimer for better complex prediction</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="bfloat" name="bfloat" checked>
+                            Use BFloat Precision
+                        </label>
+                        <small>Use bfloat precision for memory efficiency</small>
+                    </div>
+
+                    <!-- Restraints Section -->
+                    <div class="restraints-section">
+                        <h4>Experimental Restraints (Optional)</h4>
+                        
+                        <div class="form-group">
+                            <label for="rest-1v1">1v1 Restraints:</label>
+                            <textarea id="rest-1v1" name="rest-1v1" placeholder='[[78,198],[20,50]]' rows="3"></textarea>
+                            <small>JSON array of residue pairs that should be close (e.g., [[78,198],[20,50]])</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rest-1vn">1vN Restraints:</label>
+                            <textarea id="rest-1vn" name="rest-1vn" placeholder='[36,[160,161,162,163,164,165,166,167,168,169,170,178,190]]' rows="3"></textarea>
+                            <small>JSON array of [residue, [target_residues]] (e.g., [36,[160,161,162,163,164,165,166,167,168,169,170,178,190]])</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rest-mvn">MvN Restraints:</label>
+                            <textarea id="rest-mvn" name="rest-mvn" placeholder='[[10,[160,161,162,163,164,165,166,167,168,169]],[78,[160,161,162,163,164,165,166,167,168,169]],[120,[160,161,162,163,164,165,166,167,168,169]],2]' rows="4"></textarea>
+                            <small>JSON array of multiple 1vN restraints with satisfaction count (e.g., [[10,[160,161,162,163,164,165,166,167,168,169]],[78,[160,161,162,163,164,165,166,167,168,169]],[120,[160,161,162,163,164,165,166,167,168,169]],2])</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rest-rep">Repulsive Restraints:</label>
+                            <textarea id="rest-rep" name="rest-rep" placeholder='[154,250]' rows="3"></textarea>
+                            <small>JSON array of residue pairs that should be far apart (e.g., [154,250])</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="submit-btn">Submit Job</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="job-status" class="job-status" style="display: none;">
+                <h3>Job Status</h3>
+                <div id="status-message"></div>
+                <div id="progress-bar" class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+                <div id="job-id"></div>
+            </div>
+
+            <div class="example-section">
+                <h3>Example Usage:</h3>
+                <div class="example-content">
+                    <p><strong>Basic Docking:</strong> Upload a PDB file with multiple chains and specify which chains to dock (e.g., "A,B").</p>
+                    <p><strong>With Restraints:</strong> Add experimental restraints to guide the docking process:</p>
+                    <ul>
+                        <li><strong>1v1:</strong> Residue 78 should be close to residue 198</li>
+                        <li><strong>1vN:</strong> Residue 36 should be close to any of residues 160-170, 178, or 190</li>
+                        <li><strong>MvN:</strong> At least 2 out of 3 specified 1vN restraints should be satisfied</li>
+                        <li><strong>Repulsive:</strong> Residues 154 and 250 should be far apart</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../services/api-service.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('colabdock-form');
+            const jobStatus = document.getElementById('job-status');
+            const statusMessage = document.getElementById('status-message');
+            const progressFill = document.getElementById('progress-fill');
+            const jobIdElement = document.getElementById('job-id');
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(form);
+                const fileInput = document.getElementById('pdb-file');
+                
+                if (!fileInput.files[0]) {
+                    alert('Please select a PDB file');
+                    return;
+                }
+
+                // Show job status
+                jobStatus.style.display = 'block';
+                statusMessage.textContent = 'Submitting job...';
+                progressFill.style.width = '0%';
+
+                try {
+                    // Prepare parameters
+                    const parameters = {
+                        chains: formData.get('chains'),
+                        fixedChains: formData.get('fixed-chains') || undefined,
+                        resThres: parseFloat(formData.get('res-thres')),
+                        repThres: parseFloat(formData.get('rep-thres')),
+                        rounds: parseInt(formData.get('rounds')),
+                        steps: parseInt(formData.get('steps')),
+                        saveEveryNStep: parseInt(formData.get('save-every-n-step')),
+                        useMultimer: formData.get('use-multimer') === 'on',
+                        bfloat: formData.get('bfloat') === 'on'
+                    };
+
+                    // Parse restraints
+                    const rest1v1 = formData.get('rest-1v1');
+                    const rest1vN = formData.get('rest-1vn');
+                    const restMvN = formData.get('rest-mvn');
+                    const restRep = formData.get('rest-rep');
+
+                    if (rest1v1) {
+                        try {
+                            parameters.rest1v1 = JSON.parse(rest1v1);
+                        } catch (e) {
+                            alert('Invalid 1v1 restraints JSON format');
+                            return;
+                        }
+                    }
+
+                    if (rest1vN) {
+                        try {
+                            parameters.rest1vN = JSON.parse(rest1vN);
+                        } catch (e) {
+                            alert('Invalid 1vN restraints JSON format');
+                            return;
+                        }
+                    }
+
+                    if (restMvN) {
+                        try {
+                            parameters.restMvN = JSON.parse(restMvN);
+                        } catch (e) {
+                            alert('Invalid MvN restraints JSON format');
+                            return;
+                        }
+                    }
+
+                    if (restRep) {
+                        try {
+                            parameters.restRep = JSON.parse(restRep);
+                        } catch (e) {
+                            alert('Invalid repulsive restraints JSON format');
+                            return;
+                        }
+                    }
+
+                    // Submit job
+                    const response = await apiService.runTool('colabdock', fileInput.files[0], parameters);
+                    
+                    if (response.success) {
+                        const jobId = response.jobId;
+                        jobIdElement.textContent = `Job ID: ${jobId}`;
+                        statusMessage.textContent = 'Job submitted successfully! Processing...';
+                        
+                        // Poll for job status
+                        pollJobStatus(jobId);
+                    } else {
+                        statusMessage.textContent = `Error: ${response.error}`;
+                    }
+                } catch (error) {
+                    statusMessage.textContent = `Error: ${error.message}`;
+                }
+            });
+
+            async function pollJobStatus(jobId) {
+                try {
+                    const response = await apiService.getJobStatus(jobId);
+                    
+                    if (response.success) {
+                        const job = response.job;
+                        const progress = job.progress || 0;
+                        
+                        progressFill.style.width = `${progress}%`;
+                        statusMessage.textContent = `Status: ${job.status} (${progress}%)`;
+                        
+                        if (job.status === 'completed') {
+                            statusMessage.textContent = 'Job completed! Results are ready for download.';
+                            // Add download link
+                            const downloadLink = document.createElement('a');
+                            downloadLink.href = `/api/jobs/${jobId}/download`;
+                            downloadLink.textContent = 'Download Results';
+                            downloadLink.className = 'download-btn';
+                            downloadLink.download = `colabdock_results_${jobId}.zip`;
+                            jobStatus.appendChild(downloadLink);
+                        } else if (job.status === 'failed') {
+                            statusMessage.textContent = `Job failed: ${job.error || 'Unknown error'}`;
+                        } else {
+                            // Continue polling
+                            setTimeout(() => pollJobStatus(jobId), 5000);
+                        }
+                    }
+                } catch (error) {
+                    statusMessage.textContent = `Error checking job status: ${error.message}`;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
